@@ -6,13 +6,12 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
     # Django Admin, use {% url 'admin:index' %}
-    path("grappelli/", include("grappelli.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("tesosta.users.urls", namespace="users")),
@@ -28,7 +27,8 @@ urlpatterns += [
     # API base url
     path("api/", include("config.api_router")),
     # DRF auth token
-    path("auth-token/", obtain_auth_token),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path(
         "api/docs/",
