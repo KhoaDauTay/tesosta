@@ -1,3 +1,5 @@
+import os
+
 from .base import *  # noqa
 from .base import env
 
@@ -91,3 +93,21 @@ JAZZMIN_UI_TWEAKS = {
     },
     "actions_sticky_top": True
 }
+PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'private_key.pem')
+PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'public_key.pem')
+
+# Read the private key from the file
+with open(PRIVATE_KEY_PATH, 'r') as private_key_file:
+    PRIVATE_KEY = private_key_file.read()
+
+# Read the public key from the file
+with open(PUBLIC_KEY_PATH, 'r') as public_key_file:
+    PUBLIC_KEY = public_key_file.read()
+
+JWT_ALGORITHM = {
+    "SIGNING_KEY": PRIVATE_KEY,
+    "VERIFYING_KEY": PUBLIC_KEY,
+    "ALGORITHM": "RS256",
+}
+
+SIMPLE_JWT.update(**JWT_ALGORITHM)

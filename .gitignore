@@ -333,3 +333,7 @@ tesosta/media/
 .env
 .envs/*
 !.envs/.local/
+
+.idea/*
+private_key.pem
+public_key.pem
